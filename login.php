@@ -27,7 +27,7 @@
             </ul>
         </nav>
         
-        <div class="wrapper">
+        <div class="wrapper bg-light">
             <h2 class="form-group col-md-7 font-weight-bold">Sign in</h2>
             <form action="/action_page.php" class="was-validated">
                 <div class="form-group col-md-11 font-weight-bold">
