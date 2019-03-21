@@ -1,3 +1,17 @@
+<?php 
+    // session_start();
+
+    // if(isset($_SESSION['loggedin'])) {
+    //     header("Location: index.php")
+    //     exit;
+    // }
+
+    require_once "connect.php";
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,18 +43,18 @@
         
         <div class="wrapper bg-light">
             <h2 class="form-group col-md-7 font-weight-bold">Sign in</h2>
-            <form action="/action_page.php" class="was-validated">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="uname">Username</label>
-                    <input type="text" class="form-control" id="uname" placeholder="Enter your username" name="uname" required>
-                <div class="valid-feedback">Valid.</div>
-                <div class="invalid-feedback">Please fill out this field.</div>
+                    <input type="text" class="form-control" id="uname" placeholder="Enter your username" name="username">
+                <!-- <div class="valid-feedback">Valid.</div> -->
+                <!-- <div class="invalid-feedback">Please fill out this field.</div> -->
                 </div>
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="pwd">Password</label>
-                    <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="pswd" required>
-                <div class="valid-feedback">Valid.</div>
-                <div class="invalid-feedback">Please fill out this field.</div>
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password">
+                <!-- <div class="valid-feedback">Valid.</div> -->
+                <!-- <div class="invalid-feedback">Please fill out this field.</div> -->
                 </div>
                 
                 <div class="form-group col-md-11 marginTop">

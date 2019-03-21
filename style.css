@@ -111,7 +111,7 @@ legend {
     color: #2ac5ed;
     font-weight:bold;
 }      
-              
+
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:after,
@@ -145,4 +145,11 @@ bottom: .5em;
     top: 55%;
     left: 0;
     z-index: 1;
+}
+.invalid {
+    color:red;
+    font-size: 93%;
+    float: right ;
+    margin-top:-13px;
+    margin-bottom:15px;
 }

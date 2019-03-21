@@ -19,7 +19,7 @@
         if(empty(trim($username))) {
             $username_error = "Please enter a username.";
         } else {
-            $query = "SELECT id FROM users WHERE username = :username";
+            $query = "SELECT * FROM users WHERE username = :username";
             $statement = $db->prepare($query);
             $statement->bindValue(':username', $username, PDO::PARAM_STR);
             $statement->execute();
@@ -45,13 +45,19 @@
         
         if(empty(trim($firstName))) {
             $firstName_error = "Please enter a first name.";
+        } elseif(is_numeric(trim($firstName))) {
+            $firstName_error = "Please enter a valid first name.";
         }
 
         if(empty(trim($lastName))) {
             $lastName_error = "Please enter a last name.";
+        } elseif(is_numeric(trim($firstName))) {
+            $lastName_error = "Please enter a valid last name.";
         }
 
-        if(empty(trim($email))) {
+        if(!$email) {
+            $email_error = "Please enter a valid email.";
+        } elseif(empty(trim($email))) {
             $email_error = "Please enter an email.";
         }
 
@@ -70,7 +76,7 @@
             $statement->bindValue(':password', $password, PDO::PARAM_STR);
             $statement->bindValue(':firstName', $firstName, PDO::PARAM_STR);
             $statement->bindValue(':lastName', $lastName, PDO::PARAM_STR);
-            $statement->bindValue(':phoneNumber', $phone, PDO::PARAM_STR);
+            $statement->bindValue(':phoneNumber', $phone);
             $statement->bindValue(':email', $email);
             $statement->execute();
             
@@ -92,10 +98,9 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Carter+One" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
         <link rel="stylesheet" type="text/css" href="style.css">
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -124,44 +129,52 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="username" class="form-control" placeholder="User name" type="text">
+                        <input name="username" class="form-control col-11" placeholder="User name" type="text" value="<?=$username ?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $username_error; ?></p>
+
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                         </div>
-                        <input class="form-control" name="password" placeholder="Create password" type="password">
+                        <input class="form-control" name="password" placeholder="Create password" type="password" value="<?=$password?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $password_error; ?></p>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                         </div>
-                        <input class="form-control" name="repeatPw" placeholder="Repeat password" type="password">
+                        <input class="form-control" name="repeatPw" placeholder="Repeat password" type="password" value="<?=$repeatPw?>">
                     </div> <!-- form-group// --> 
+                    <p class="invalid"><?php echo $repeatPw_error; ?></p>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="firstName" class="form-control" placeholder="First name" type="text">
+                        <input name="firstName" class="form-control" placeholder="First name" type="text" value="<?=$firstName?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $firstName_error; ?></p>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="lastName" class="form-control" placeholder="Last name" type="text">
+                        <input name="lastName" class="form-control" placeholder="Last name" type="text" value="<?=$lastName?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $lastName_error; ?></p>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                         </div>
-                        <input name="email" class="form-control" placeholder="Email address" type="email">
+                        <input name="email" class="form-control" placeholder="Email address" type="email" value="<?=$email?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $email_error; ?></p>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
                         </div>
-                        <input name="phone" class="form-control" placeholder="Phone number" type="text">
+                        <input name="phone" class="form-control" placeholder="Phone number" type="text" value="<?=$phone?>">
                     </div> <!-- form-group// -->
+                    <p class="invalid"><?php echo $phone_error; ?></p>
 
                     <div class="form-group">
                         <button type="submit" name="create" class="btn btn-primary btn-block"> Create Account  </button>
