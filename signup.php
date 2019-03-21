@@ -1,3 +1,88 @@
+<?php
+    require_once "connect.php";
+
+    // $username = $password = $repeatPw = "";
+    $username_error = $password_error = $repeatPw_error = $firstName_error 
+    = $lastName_error = $email_error = $phone_error =  "";
+
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $repeatPw = filter_input(INPUT_POST, 'repeatPw', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    $firstName = filter_input(INPUT_POST, 'firstName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_NUMBER_INT);
+
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+        
+        if(empty(trim($username))) {
+            $username_error = "Please enter a username.";
+        } else {
+            $query = "SELECT id FROM users WHERE username = :username";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':username', $username, PDO::PARAM_STR);
+            $statement->execute();
+            $users= $statement->fetch();
+            $count = $statement->rowCount();
+
+            if($count == 1) {
+                $username_error = "The username entered is already existed.";
+            }
+        }
+
+        if(empty(trim($password))) {
+            $password_error = "Please enter a password.";
+        } elseif(strlen(trim($password)) < 7) {
+            $password_error = "Password must be at least 8 characters.";
+        }
+
+        if(empty(trim($repeatPw))) {
+            $repeatPw_error = "Please confirm password.";
+        } elseif(empty($password_error) && ($password !== $repeatPw)) {
+            $repeatPw_error = "Passwords entered did not match.";
+        }
+        
+        if(empty(trim($firstName))) {
+            $firstName_error = "Please enter a first name.";
+        }
+
+        if(empty(trim($lastName))) {
+            $lastName_error = "Please enter a last name.";
+        }
+
+        if(empty(trim($email))) {
+            $email_error = "Please enter an email.";
+        }
+
+        if(empty(trim($phone))) {
+            $phone_error = "Please enter a phone number.";
+        }
+
+        $valid = empty($username_error) && empty($password_error) && empty($repeatPw_error) && empty($firstName_error) && 
+                    empty($lastName_error) && empty($email_error) && empty($phone_error);
+        if($valid) {
+            $query = "INSERT INTO users (username, password, firstName, lastName, phoneNumber, email) 
+                        values (:username, :password, :firstName, :lastName, :phoneNumber, :email)";
+            $statement = $db->prepare($query);
+
+            $statement->bindValue(':username', $username, PDO::PARAM_STR);
+            $statement->bindValue(':password', $password, PDO::PARAM_STR);
+            $statement->bindValue(':firstName', $firstName, PDO::PARAM_STR);
+            $statement->bindValue(':lastName', $lastName, PDO::PARAM_STR);
+            $statement->bindValue(':phoneNumber', $phone, PDO::PARAM_STR);
+            $statement->bindValue(':email', $email);
+            $statement->execute();
+            
+            header("Location: login.php");
+            exit;
+        }
+
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,51 +119,52 @@
             <article class="card-body mx-auto" style="width: 450px;">
                 <h4 class="card-title mt-3 text-center">Create Account</h4>
                 <p class="text-center">Get started with your free account</p>
-                <form>
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="" class="form-control" placeholder="User name" type="text">
+                        <input name="username" class="form-control" placeholder="User name" type="text">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                         </div>
-                        <input class="form-control" placeholder="Create password" type="password">
+                        <input class="form-control" name="password" placeholder="Create password" type="password">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                         </div>
-                        <input class="form-control" placeholder="Repeat password" type="password">
+                        <input class="form-control" name="repeatPw" placeholder="Repeat password" type="password">
                     </div> <!-- form-group// --> 
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="" class="form-control" placeholder="First name" type="text">
+                        <input name="firstName" class="form-control" placeholder="First name" type="text">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                        <input name="" class="form-control" placeholder="Last name" type="text">
+                        <input name="lastName" class="form-control" placeholder="Last name" type="text">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                         </div>
-                        <input name="" class="form-control" placeholder="Email address" type="email">
+                        <input name="email" class="form-control" placeholder="Email address" type="email">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
                         </div>
-                        <input name="" class="form-control" placeholder="Phone number" type="text">
-                    </div> <!-- form-group// -->                                     
+                        <input name="phone" class="form-control" placeholder="Phone number" type="text">
+                    </div> <!-- form-group// -->
+
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+                        <button type="submit" name="create" class="btn btn-primary btn-block"> Create Account  </button>
                     </div> <!-- form-group// -->      
                     <p class="text-center">Have an account? <a href="login.php">Log In</a> </p>                                                                 
                 </form>
