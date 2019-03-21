@@ -103,43 +103,15 @@ legend {
     margin:0 auto;
 }
 
-
-.test { overflow:hidden;}
 #services .services-top {
     padding: 70px 0 50px;
 }
-#services .services-list {
-    padding-top: 50px;
-}
-.services-list .service-block {
-    margin-bottom: 25px;
-}
-.services-list .service-block .ico {
-    font-size: 38px;
-    float: left;
-}
-.services-list .service-block .text-block {
-    margin-left: 58px;
-}
-.services-list .service-block .text-block .name {
-    font-size: 20px;
-    font-weight: 900;
-    margin-bottom: 5px;
-}
-.services-list .service-block .text-block .info {
-    font-size: 16px;
-    font-weight: 300;
-    margin-bottom: 10px;
-}
-.services-list .service-block .text-block .text {
-    font-size: 12px;
-    line-height: normal;
-    font-weight: 300;
-}
+
 .highlight {
     color: #2ac5ed;
     font-weight:bold;
-}                    
+}      
+              
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:after,
@@ -173,13 +145,4 @@ bottom: .5em;
     top: 55%;
     left: 0;
     z-index: 1;
-}
-
-.btn-facebook {
-    background-color: #405D9D;
-    color: #fff;
-}
-.btn-twitter {
-    background-color: #42AEEC;
-    color: #fff;
 }

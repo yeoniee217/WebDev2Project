@@ -60,27 +60,29 @@
                             </div>
                         </div>
 
-                        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="th-sm">Name
-                                    </th>
-                                    <th class="th-sm">Cost
-                                    </th>
-                                    <th class="th-sm">Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($services as $service): ?>
-                                <tr>
-                                    <td><?= $service['name'] ?></td>
-                                    <td>$<?= $service['cost'] ?></td>
-                                    <td><?= $service['description'] ?></td>
-                                </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
+                        <div class='marginTop1'>
+                            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="th-sm">Name
+                                        </th>
+                                        <th class="th-sm">Cost
+                                        </th>
+                                        <th class="th-sm">Description
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($services as $service): ?>
+                                    <tr>
+                                        <td><?= $service['name'] ?></td>
+                                        <td>$<?= $service['cost'] ?></td>
+                                        <td><?= $service['description'] ?></td>
+                                    </tr>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>
