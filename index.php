@@ -1,7 +1,6 @@
 <?php
     session_start();
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,11 +27,11 @@
             <li><a href="index.php">Home</a></li>
             <li><a href="services.php">Services</a></li>
             <li><a href="#">Appointment</a></li>
-            <?php if (!isset($_SESSION['login_user'])) : ?>
+            <?php if (!isset($_SESSION['loggedin'])) : ?>
             <li><a href="login.php">Sign in</a></li>
             <?php else: ?>
-            <li><a href="myAccount.php"><?= $_SESSION['login_user'] ?></a></li>
-            <li><a href="login.php">Sign out</a></li>
+            <li><a href="myAccount.php?id=<?= $_SESSION['id']?>"><?= $_SESSION['username'] ?></a></li>
+            <li><a href="logout.php">Sign out</a></li>
             <?php endif?>
             <li><a href="admin.php">Administration</a></li>
         </ul>

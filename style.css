@@ -100,7 +100,8 @@ legend {
 .error {
     color:red;
     text-align: center;
-    margin:0 auto;
+    /* margin:0 auto; */
+    margin-bottom:10px;
 }
 
 #services .services-top {

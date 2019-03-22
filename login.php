@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    if(isset($_SESSION['login_user'])) {
+    if(isset($_SESSION['loggedin'])) {
         header("Location: index.php");
         exit;
     }
@@ -11,7 +11,7 @@
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    $username_error = $password_error = "";
+    $username_error = $password_error = $error =  "";
 
     if($_SERVER['REQUEST_METHOD'] == "POST") {
         if(empty(trim($username))) {
@@ -31,13 +31,17 @@
             $statement->execute();
             $user= $statement->fetch();
 
-            $_SESSION['login_user'] = $username;
+            if($username == $user['username'] && $password == $user['password']) {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
 
-            header("Location: index.php");
-            exit;
+                header("Location: index.php");
+                exit;
+            } else {
+                $error = "Username or password is invalid. Please try it again.";
+            }
         }
-
-        $error = "Username or password is invalid. Please try it again.";
 
     }
 
@@ -78,14 +82,16 @@
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="uname">Username</label>
                     <input type="text" class="form-control" id="uname" placeholder="Enter your username" name="username" value="<?=$username?>">
-                    <span><?=$username_error?></span>
                 </div>
+                <p class="invalid"><?=$username_error?></p>
+
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="pwd">Password</label>
                     <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password">
-
                 </div>
-                
+                <p class="invalid"><?=$password_error?></p>
+
+                <p class="error"><?=$error?></p>
                 <div class="form-group col-md-11 marginTop">
                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                     <div class="marginTop1"><a href="signup.php" class="btn btn-outline-dark btn-block">Create account</a></div>
