@@ -33,7 +33,9 @@
             <li><a href="myAccount.php?id=<?= $_SESSION['id']?>"><?= $_SESSION['username'] ?></a></li>
             <li><a href="logout.php">Sign out</a></li>
             <?php endif?>
+            <?php if(isset($_SESSION['loggedin']) && $_SESSION['id'] == 2):?>
             <li><a href="admin.php">Administration</a></li>
+            <?php endif?>
         </ul>
     </nav>
 

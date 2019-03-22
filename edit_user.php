@@ -6,21 +6,21 @@
  *  Date Created: January 28, 2019
  *
  *****************************************/
-session_start();
+    session_start();
     require 'connect.php';
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-    if ($id) 
+    if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $id) 
     {
         $cleanId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
         
-        $query = "SELECT * FROM services WHERE id = :id";
+        $query = "SELECT * FROM users WHERE id = :id";
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $cleanId, PDO::PARAM_INT );
         $statement->execute();
-        $service = $statement->fetch(); 
+        $user = $statement->fetch(); 
 
-        if (is_null($service['id']))
+        if (is_null($user['id']))
         {
             header("Location: index.php");
         }
@@ -29,6 +29,15 @@ session_start();
     else {
         header("Location: index.php");
         exit;
+    }
+
+    function setPhoneNumberFormat($number) {
+        $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
+        return $result;
+    }
+
+    if(isset($user['phoneNumber'])) {
+        $phoneNum = setPhoneNumberFormat($user['phoneNumber']);
     }
 
 ?>
@@ -72,33 +81,39 @@ session_start();
     <div class="all_services">
         <form action="process_post.php" method="post" role="form">
             <fieldset>
-                <legend>Edit Service</legend>
+                <legend>Edit account</legend>
                 <div class="form-group">
                     <div class="col-xs-4">
-                        <label for="name">Service Name</label>
-                        <input class="form-control" id="name" name="name" value="<?=$service['name']?>">
+                        <label for="name">First Name</label>
+                        <input class="form-control" id="name" name="name" value="<?=$user['firstName']?>">
                     </div>
                 </div>
 
-                <div class="input-group mb-3">
-                    <div class="col-xs-3">
-                        <label for="cost">Service Cost</label>                       
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                            <input name="cost" id="cost" value="<?=$service['cost']?>" type="text" class="form-control" >
-                        </div>
-                        </div>
+                <div class="form-group">
+                    <div class="col-xs-4">
+                        <label for="name">Last Name</label>
+                        <input class="form-control" id="name" name="name" value="<?=$user['lastName']?>">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea class="form-control summernote" rows="10" name="description" id="description"><?=$service['description'] ?></textarea>
+                    <div class="col-xs-4">
+                        <label for="name">Phone number</label>
+                        <input class="form-control" id="name" name="name" value="<?=$phoneNum?>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-4">
+                        <label for="name">Email</label>
+                        <input class="form-control" id="name" name="name" value="<?=$user['email']?>">
+                    </div>
                 </div>
 
                 <div>
-                    <input type="hidden" name="id" value="<?= $service['id'] ?>" />
-                    <input type="submit" name="update" class="btn btn-primary" value="Update Service">
-                    <input type="submit" name="delete" class="btn btn-primary" value="Delete Service" onclick="return confirm('Are you sure you wish to delete this service?')" />
+                    <input type="hidden" name="id" value="<?= $user['id'] ?>" />
+                    <input type="submit" name="update" class="btn btn-primary" value="Update account">
+                    <input type="submit" name="delete" class="btn btn-primary" value="Delete account" onclick="return confirm('Are you sure you wish to delete this service?')" />
                 </div>
             </fieldset>
         </form>
