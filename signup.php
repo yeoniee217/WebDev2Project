@@ -23,7 +23,7 @@
             $statement = $db->prepare($query);
             $statement->bindValue(':username', $username, PDO::PARAM_STR);
             $statement->execute();
-            $users= $statement->fetch();
+            $user= $statement->fetch();
             $count = $statement->rowCount();
 
             if($count == 1) {

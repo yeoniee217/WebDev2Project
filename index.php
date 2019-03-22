@@ -1,3 +1,8 @@
+<?php
+    session_start();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -23,7 +28,11 @@
             <li><a href="index.php">Home</a></li>
             <li><a href="services.php">Services</a></li>
             <li><a href="#">Appointment</a></li>
+            <?php if (!isset($_SESSION['login_user'])) : ?>
             <li><a href="login.php">Sign in</a></li>
+            <?php else: ?>
+            <li><a href="myAccount.php"><?= $_SESSION['login_user'] ?></a></li>
+            <?php endif?>
             <li><a href="admin.php">Administration</a></li>
         </ul>
     </nav>

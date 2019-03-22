@@ -1,14 +1,45 @@
 <?php 
-    // session_start();
+    session_start();
 
-    // if(isset($_SESSION['loggedin'])) {
-    //     header("Location: index.php")
-    //     exit;
-    // }
+    if(isset($_SESSION['login_user'])) {
+        header("Location: index.php");
+        exit;
+    }
 
     require_once "connect.php";
 
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+    $username_error = $password_error = "";
+
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+        if(empty(trim($username))) {
+            $username_error = "Please enter your username.";
+        }
+
+        if(empty(trim($password))) {
+            $password_error = "Please enter your password.";
+        }
+
+        if(empty($username_error) && empty($password_error)) {
+            $query = "SELECT * FROM users WHERE username = :username AND password = :password";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':username', $username, PDO::PARAM_STR);
+            $statement->bindValue(':password', $password, PDO::PARAM_STR);
+
+            $statement->execute();
+            $user= $statement->fetch();
+
+            $_SESSION['login_user'] = $username;
+
+            header("Location: index.php");
+            exit;
+        }
+
+        $error = "Username or password is invalid. Please try it again.";
+
+    }
 
 ?>
 
