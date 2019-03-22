@@ -77,15 +77,13 @@
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="uname">Username</label>
-                    <input type="text" class="form-control" id="uname" placeholder="Enter your username" name="username">
-                <!-- <div class="valid-feedback">Valid.</div> -->
-                <!-- <div class="invalid-feedback">Please fill out this field.</div> -->
+                    <input type="text" class="form-control" id="uname" placeholder="Enter your username" name="username" value="<?=$username?>">
+                    <span><?=$username_error?></span>
                 </div>
                 <div class="form-group col-md-11 font-weight-bold">
                     <label for="pwd">Password</label>
                     <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password">
-                <!-- <div class="valid-feedback">Valid.</div> -->
-                <!-- <div class="invalid-feedback">Please fill out this field.</div> -->
+
                 </div>
                 
                 <div class="form-group col-md-11 marginTop">

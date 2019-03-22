@@ -32,6 +32,7 @@
             <li><a href="login.php">Sign in</a></li>
             <?php else: ?>
             <li><a href="myAccount.php"><?= $_SESSION['login_user'] ?></a></li>
+            <li><a href="login.php">Sign out</a></li>
             <?php endif?>
             <li><a href="admin.php">Administration</a></li>
         </ul>
