@@ -39,7 +39,7 @@
 
         if(empty(trim($repeatPw))) {
             $repeatPw_error = "Please confirm password.";
-        } elseif(empty($password_error) && ($password !== $repeatPw)) {
+        } elseif(empty($repeatPw_error) && ($password !== $repeatPw)) {
             $repeatPw_error = "Passwords entered did not match.";
         }
         

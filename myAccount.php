@@ -11,6 +11,7 @@
         $query = "SELECT * FROM users WHERE id = :id";
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $cleanId, PDO::PARAM_INT );
+        
         $statement->execute();
         $user = $statement->fetch(); 
 
@@ -34,8 +35,12 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Carter+One" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <link rel="stylesheet" href="https://bootswatch.com/4/simplex/bootstrap.min.css"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/mdb.min.css" rel="stylesheet">
+        <link href="css/addons/datatables.min.css" rel="stylesheet"> 
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
@@ -61,27 +66,17 @@
 
         <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-10 userPage">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title mb-4">
+                        <div class="card-title profileCenter">
+                        <div><i class="fas fa-user-circle"></i><div>
                             <div class="d-flex justify-content-start">
-                                <div class="image-container">
-                                    <img src="http://placehold.it/150x150" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
-                                    <div class="middle">
-                                        <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
-                                        <input type="file" style="display: none;" id="profilePicture" name="file" />
-                                    </div>
-                                </div>
-                                <div class="userData ml-3">
-                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="javascript:void(0);">Some Name</a></h2>
-                                    <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
-                                    <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
-                                </div>
-                                <div class="ml-auto">
-                                    <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
+                                <div class="userData profileCenter">
+                                    <h2 class="d-block"><a href="#"><?=$user['username']?></a></h2>
                                 </div>
                             </div>
+                            <h6><a href="#" class="btn btn-primary btn-sm">Edit profile</a></h6>
                         </div>
 
                         <div class="row">
@@ -98,14 +93,11 @@
                                     <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">                                  
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
-                                                <label style="font-weight:bold;">Full Name</label>
+                                                <label style="font-weight:bold;">First Name</label>
                                             </div>
-                                            <div class="col-md-8 col-6">
-                                                Jamshaid Kamran
-                                            </div>
+                                            <div class="col-md-8 col-6"></div>
                                         </div>
                                         <hr />
-
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
                                                 <label style="font-weight:bold;">Birth Date</label>
@@ -114,9 +106,7 @@
                                                 March 22, 1994.
                                             </div>
                                         </div>
-                                        <hr />
-                                        
-                                        
+                                        <hr />   
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
                                                 <label style="font-weight:bold;">Something</label>
@@ -144,7 +134,6 @@
                                             </div>
                                         </div>
                                         <hr />
-
                                     </div>
                                     <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
                                         Facebook, Google, Twitter Account that are connected to this account
