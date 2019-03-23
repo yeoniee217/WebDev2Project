@@ -1,11 +1,16 @@
 <?php
     session_start();
     
-    require 'connect.php';
+    require_once 'connect.php';
+
+    if(isset($_POST["image"])) {
+        header("Location: myAccount.php");
+        exit;
+    }
 
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $id) {
+    if(isset($_SESSION["loggedin"]) && !isset($_POST["image"]) && $id) {
         $cleanId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
         
         $query = "SELECT * FROM users WHERE id = :id";
@@ -18,11 +23,12 @@
         if (is_null($user['id']))
         {
             header("Location: index.php");
+            exit;
         }
 
     } else {
-        header("Location: index.php");
-        exit;
+        header("Location: myAccount.php");
+        
     }
 
     function setPhoneNumberFormat($number) {
@@ -84,30 +90,30 @@
                         
                         <!-- <div><i class="fas fa-user-circle"></i><div>                               -->
                             <div class="d-flex justify-content-start">
-                            <div class="image-container">
-                                    <?php if(file_exists('uploads/'.$_SESSION["id"].'.png')): ?>
-                                        <img src="uploads/<?=$_SESSION['id']?>.png" alt="profile" style="width=100%">
+                                <div class="userData ml-1 profileCenter">
+                                    <p style="margin-left:35px;"><i class="fas fa-user-circle"></i></p>
+                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold; margin-left:20px;"><a href="edit_user.php?id=<?=$user['id']?>"><?=$user['username']?></a></h2>
+                                    <p><a href="edit_user.php?id=<?= $user['id']?>" style="width:130px;" class="btn btn-primary btn-sm">Edit profile</a></p>
+                                </div> 
+                                <div class="image-container">
+                                    <?php if(file_exists('uploads/'.$_SESSION['id'].'.png')): ?>
+                                        <img src="uploads/<?=$_SESSION['id']?>.png" alt="profile" style="width:150px; height:150px">
+                                    <?php elseif(file_exists('uploads/'.$_SESSION['id'].'.jpg')): ?>
+                                        <img src="uploads/<?=$_SESSION['id']?>.jpg" alt="profile" style="width:150px; height:150px">
                                     <?php else: ?>
-                                        <img src="http://placehold.it/150x150" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                                        <img src="http://placehold.it/150x150" id="imgProfile" style="width:150px; height:150px" class="img-thumbnail" />
                                     <?php endif ?>
 
-                                    <form class="middle" method="post" action="uploadImage.php" entype="multipart/form-data">
-                                        <input type="submit" class="btn btn-secondary" id="btnChangePicture" value="Change" />
-                                        <input type="file" id="image" name="image" />
+                                    <form method="post" action="uploadImage.php" enctype='multipart/form-data'>                                        
+                                        <div class="custom-file col-6">
+                                            <input type="file" name="image" id="image" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                            <label class="custom-file-label" style="text-align: center !important; font-size:13px;" for="inputGroupFile01">Choose file</label>
+                                        </div>
+                                        <input type='submit' class="btn btn-secondary btn-sm" id="btnChangePicture" value="Change">
                                     </form>
-                                </div>
-
-                                <div class="userData ml-3 profileCenter">
-                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="#"><?=$user['username']?></a></h2>
-                                    <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
-                                    <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6>
-                                    <h6><a href="edit_user.php?id=<?= $user['id']?>" class="btn btn-primary btn-sm">Edit profile</a></h6>
-                                </div>                                                 
-                            </div>
-                                                        
+                                </div>                                                
+                            </div>                    
                         </div>
-
-                    
 
                         <div class="row">
                             <div class="col-12">
@@ -119,7 +125,7 @@
                                         <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Connected Services</a>
                                     </li>
                                 </ul>
-                                <div class="tab-content ml-1" id="myTabContent">
+                                <div class="tab-content ml-2" id="myTabContent">
                                     <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">                                  
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
@@ -162,5 +168,9 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/mdb.js"></script>
+        <script type="text/javascript" src="js/addons/datatables.min.js"></script>
     </body>
 </html>

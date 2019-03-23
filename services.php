@@ -6,10 +6,10 @@
  *  Date Created: March 14, 2019
  *
  *****************************************/
-
+    session_start();
     require 'connect.php';
 
-    $query = "SELECT * FROM services ORDER BY id DESC";
+    $query = "SELECT * FROM services ORDER BY name ASC";
     $statement = $db->prepare($query); //Returns a PDOStatement object.
     $statement->execute();        // The query is now executed.
     $services = $statement->fetchAll();  //fetchAll: get an array of all the rows
@@ -45,7 +45,7 @@
             <?php if (!isset($_SESSION['loggedin'])) : ?>
             <li><a href="login.php">Sign in</a></li>
             <?php else: ?>
-            <li><a href="myAccount.php?id=<?= $_SESSION['id']?>"><?= $_SESSION['username'] ?></a></li>
+            <li class=""><a href="myAccount.php?id=<?= $_SESSION['id']?>"><?= $_SESSION['username'] ?></a></li>
             <li><a href="logout.php">Sign out</a></li>
             <?php endif?>
             <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['id'] == 2):?>

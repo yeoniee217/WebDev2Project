@@ -6,7 +6,6 @@
  *  Date Created: March 14, 2019
  *
  *****************************************/
-
     define('DB_DSN','mysql:host=localhost;dbname=serverside');
     define('DB_USER','serveruser');
     define('DB_PASS','gorgonzola7!');     

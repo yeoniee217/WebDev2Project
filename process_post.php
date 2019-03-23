@@ -73,6 +73,20 @@ if(isset($_POST['delete']))
     exit;    
 }
 
+$getid = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+if(isset($_GET['id']))
+{
+    $query = "DELETE FROM services WHERE id = :id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $getid, PDO::PARAM_INT);
+    $statement->execute();
+
+    header("Location: admin.php");
+    exit;    
+}
+
 ?>
 
 <!DOCTYPE html>

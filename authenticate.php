@@ -6,9 +6,9 @@
 // *  Date Created: March 14, 2019
 // *
 // *****************************************/
-  define('ADMIN_LOGIN','jl');
+  define('ADMIN_LOGIN','admin');
 
-  define('ADMIN_PASSWORD','mypass');
+  define('ADMIN_PASSWORD','Password01');
 
   if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
 
@@ -24,6 +24,5 @@
 
   }
 
-   
 
 ?>

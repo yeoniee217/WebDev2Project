@@ -6,7 +6,7 @@
  *  Date Created: January 28, 2019
  *
  *****************************************/
-session_start();
+    session_start();
     require 'connect.php';
 
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
