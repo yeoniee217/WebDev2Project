@@ -8,10 +8,8 @@
         exit;
     }
 
-    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-    if(isset($_SESSION["loggedin"]) && !isset($_POST["image"]) && $id) {
-        $cleanId = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+    if(isset($_SESSION["loggedin"]) ) {
+        $cleanId = filter_var($_SESSION['id'], FILTER_SANITIZE_NUMBER_INT);
         
         $query = "SELECT * FROM users WHERE id = :id";
         $statement = $db->prepare($query);
@@ -26,9 +24,6 @@
             exit;
         }
 
-    } else {
-        header("Location: myAccount.php");
-        
     }
 
     function setPhoneNumberFormat($number) {
@@ -87,12 +82,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title profileCenter">
-                        
-                        <!-- <div><i class="fas fa-user-circle"></i><div>                               -->
                             <div class="d-flex justify-content-start">
                                 <div class="userData ml-1 profileCenter">
                                     <p style="margin-left:35px;"><i class="fas fa-user-circle"></i></p>
-                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold; margin-left:20px;"><a href="edit_user.php?id=<?=$user['id']?>"><?=$user['username']?></a></h2>
+                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold; margin-left:20px;"><a href="edit_user.php?id=<?=$_SESSION['id']?>"><?=$_SESSION['username']?></a></h2>
                                     <p><a href="edit_user.php?id=<?= $user['id']?>" style="width:130px;" class="btn btn-primary btn-sm">Edit profile</a></p>
                                 </div> 
                                 <div class="image-container">

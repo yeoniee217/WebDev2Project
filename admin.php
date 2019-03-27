@@ -16,6 +16,12 @@ $statement->execute();        // The query is now executed.
 
 $services = $statement->fetchAll();  //fetchAll: get an array of all the rows
 
+$query = "SELECT * FROM users ORDER BY id ASC";
+$statement = $db->prepare($query); //Returns a PDOStatement object.
+$statement->execute();        // The query is now executed.
+
+$users = $statement->fetchAll();  //fetchAll: get an array of all the rows
+
 ?>
 
 <!DOCTYPE html>
@@ -79,12 +85,55 @@ $services = $statement->fetchAll();  //fetchAll: get an array of all the rows
                     <tbody id="form-list-client-body">
                     <?php foreach($services as $service): ?>
                         <tr>
-                            <td><h5><a href="show_service.php?id=<?= $service['id'] ?>"><?= $service['name'] ?></a> (Cost: $<?= $service['cost'] ?>)</h5></td>
+                            <td><h5><a href="show_service.php?id=<?= $service['id'] ?>"><?= $service['name'] ?></a></h5></td>
                             <td><h5>$<?= $service['cost'] ?></h5></td>                          
                             <td>
                                 <a href="show_service.php?id=<?= $service['id'] ?>" title="view this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
                                 <a href="edit_service.php?id=<?= $service['id'] ?>" title="edit this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
                                 <a href="process_post.php?id=<?=$service['id']?>" title="delete this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+
+                <?php else: ?>
+                    <p>No services found</p>
+                <?php endif; ?>
+            </form>
+        </div>
+        <br/>
+        <br/>
+        <div class="col-md-12">
+            <form action="process_post.php" method="post" id="form-list-client">
+                <legend>List of users</legend>
+                <div class="pull-right">
+                    <a class="btn btn-default-btn-xs btn-success" href="signup.php"><i class="glyphicon glyphicon-plus"></i> Add User</a>
+                </div>
+                <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <td>Username</td>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone number</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+
+                    <?php if($users != null): ?>
+                    <tbody id="form-list-client-body">
+                    <?php foreach($users as $user): ?>
+                        <tr>
+                            <td><h5><a href="myAccount.php?id=<?= $user['id'] ?>"><?= $user['username'] ?></a></h5></td>
+                            <td><h5><?= $user['firstName'] ?></h5></td>                    
+                            <td><h5><?= $user['lastName'] ?></h5></td> 
+                            <td><h5><?= $user['phoneNumber'] ?></h5></td>
+                            <td><h5><?= $user['email'] ?></h5></td>  
+                            <td>
+                                <a href="myAccount.php?id=<?= $user['id'] ?>" title="view this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
+                                <a href="edit_user.php?id=<?= $user['id'] ?>" title="edit this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
+                                <a href="process_post.php?id=<?=$user['id']?>" title="delete this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
                             </td>
                         </tr>
                     <?php endforeach ?>
