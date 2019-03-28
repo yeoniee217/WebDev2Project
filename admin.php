@@ -22,6 +22,11 @@ $statement->execute();        // The query is now executed.
 
 $users = $statement->fetchAll();  //fetchAll: get an array of all the rows
 
+function setPhoneNumberFormat($number) {
+    $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
+    return $result;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -118,6 +123,7 @@ $users = $statement->fetchAll();  //fetchAll: get an array of all the rows
                             <th>Last Name</th>
                             <th>Phone number</th>
                             <th>Email</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -128,11 +134,13 @@ $users = $statement->fetchAll();  //fetchAll: get an array of all the rows
                             <td><h5><a href="myAccount.php?id=<?= $user['id'] ?>"><?= $user['username'] ?></a></h5></td>
                             <td><h5><?= $user['firstName'] ?></h5></td>                    
                             <td><h5><?= $user['lastName'] ?></h5></td> 
-                            <td><h5><?= $user['phoneNumber'] ?></h5></td>
+                            
+                            <?php $phoneNum = setPhoneNumberFormat($user['phoneNumber']); ?>
+                            <td><h5><?= $phoneNum ?></h5></td>                          
                             <td><h5><?= $user['email'] ?></h5></td>  
                             <td>
-                                <a href="myAccount.php?id=<?= $user['id'] ?>" title="view this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
-                                <a href="edit_user.php?id=<?= $user['id'] ?>" title="edit this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
+                                <a href="myAccount.php?id=<?= $user['id'] ?>" title="view this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
+                                <a href="edit_user.php?id=<?= $user['id'] ?>" title="edit this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
                                 <a href="process_post.php?id=<?=$user['id']?>" title="delete this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
                             </td>
                         </tr>

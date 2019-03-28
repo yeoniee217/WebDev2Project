@@ -26,6 +26,18 @@
 
     }
 
+    if(isset($_SESSION["id"]) && $_SESSION['id']==2 && filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)) {
+        $cleanId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+        $query = "SELECT * FROM users WHERE id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $cleanId, PDO::PARAM_INT );
+
+        $statement->execute();
+        $user = $statement->fetch(); 
+
+    }
+
     function setPhoneNumberFormat($number) {
         $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
         return $result;
@@ -85,7 +97,7 @@
                             <div class="d-flex justify-content-start">
                                 <div class="userData ml-1 profileCenter">
                                     <p style="margin-left:35px;"><i class="fas fa-user-circle"></i></p>
-                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold; margin-left:20px;"><a href="edit_user.php?id=<?=$_SESSION['id']?>"><?=$_SESSION['username']?></a></h2>
+                                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold; margin-left:20px;"><a href="edit_user.php?id=<?=$user['id']?>"><?=$user['username']?></a></h2>
                                     <p><a href="edit_user.php?id=<?= $user['id']?>" style="width:130px;" class="btn btn-primary btn-sm">Edit profile</a></p>
                                 </div> 
                                 <div class="image-container">
