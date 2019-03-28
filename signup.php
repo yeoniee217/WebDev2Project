@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once "connect.php";
 
     // $username = $password = $repeatPw = "";
@@ -73,17 +74,25 @@
             $statement = $db->prepare($query);
 
             $statement->bindValue(':username', $username, PDO::PARAM_STR);
-            $statement->bindValue(':password', $password, PDO::PARAM_STR);
+            $statement->bindValue(':password', password_hash($password, PASSWORD_DEFAULT), PDO::PARAM_STR);
             $statement->bindValue(':firstName', $firstName, PDO::PARAM_STR);
             $statement->bindValue(':lastName', $lastName, PDO::PARAM_STR);
             $statement->bindValue(':phoneNumber', $phone);
             $statement->bindValue(':email', $email);
             $statement->execute();
             
-            header("Location: login.php");
-            exit;
+            
+            if(!isset($_SESSION["loggedin"])) {
+                header("Location: login.php");
+                exit; 
+            } else {
+                header("Location: admin.php");
+                exit;
+            }
+           
+            
         }
-
+        
     }
 
 

@@ -7,7 +7,7 @@
  *
  *****************************************/
 session_start();
-require 'authenticate.php';
+require_once 'authenticate.php';
 require 'connect.php';
 
 $query = "SELECT * FROM services ORDER BY name ASC";
@@ -95,7 +95,7 @@ function setPhoneNumberFormat($number) {
                             <td>
                                 <a href="show_service.php?id=<?= $service['id'] ?>" title="view this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
                                 <a href="edit_service.php?id=<?= $service['id'] ?>" title="edit this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
-                                <a href="process_post.php?id=<?=$service['id']?>" title="delete this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
+                                <a href="process_post.php?id=<?=$service['id']?>" title="delete this service" class="btn btn-default btn-sm " onclick="return confirm('Are you sure you wish to delete this service?')"> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -141,7 +141,7 @@ function setPhoneNumberFormat($number) {
                             <td>
                                 <a href="myAccount.php?id=<?= $user['id'] ?>" title="view this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
                                 <a href="edit_user.php?id=<?= $user['id'] ?>" title="edit this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
-                                <a href="process_post.php?id=<?=$user['id']?>" title="delete this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
+                                <a href="process_user.php?id=<?=$user['id']?>" title="delete this user" class="btn btn-default btn-sm" onclick="return confirm('Are you sure you wish to delete this user?')"> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
                             </td>
                         </tr>
                     <?php endforeach ?>

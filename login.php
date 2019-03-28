@@ -13,7 +13,7 @@
 
     $username_error = $password_error = $error =  "";
 
-    if($_SERVER['REQUEST_METHOD'] == "POST") {
+    if($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_SESSION['loggedin'])) {
         if(empty(trim($username))) {
             $username_error = "Please enter your username.";
         }
@@ -23,15 +23,15 @@
         }
 
         if(empty($username_error) && empty($password_error)) {
-            $query = "SELECT * FROM users WHERE username = :username AND password = :password";
+            $query = "SELECT * FROM users WHERE username = :username";
             $statement = $db->prepare($query);
             $statement->bindValue(':username', $username, PDO::PARAM_STR);
-            $statement->bindValue(':password', $password, PDO::PARAM_STR);
+            //$statement->bindValue(':password', $password, PDO::PARAM_STR);
 
             $statement->execute();
             $user= $statement->fetch();
 
-            if($username == $user['username'] && $password == $user['password']) {
+            if($username == $user['username'] && password_verify($password, $user['password'])) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];

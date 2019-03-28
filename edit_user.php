@@ -31,14 +31,14 @@
         exit;
     }
 
-    function setPhoneNumberFormat($number) {
-        $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
-        return $result;
-    }
+    // function setPhoneNumberFormat($number) {
+    //     $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
+    //     return $result;
+    // }
 
-    if(isset($user['phoneNumber'])) {
-        $phoneNum = setPhoneNumberFormat($user['phoneNumber']);
-    }
+    // if(isset($user['phoneNumber'])) {
+    //     $phoneNum = setPhoneNumberFormat($user['phoneNumber']);
+    // }
 
 ?>
 
@@ -79,34 +79,34 @@
     </nav>
 
     <div class="all_services">
-        <form action="process_post.php" method="post" role="form">
+        <form action="process_user.php" method="post" role="form">
             <fieldset>
                 <legend>Edit account</legend>
                 <div class="form-group">
                     <div class="col-xs-4">
                         <label for="name">First Name</label>
-                        <input class="form-control" id="name" name="name" value="<?=$user['firstName']?>">
+                        <input class="form-control" id="name" name="firstName" value="<?=$user['firstName']?>">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-4">
                         <label for="name">Last Name</label>
-                        <input class="form-control" id="name" name="name" value="<?=$user['lastName']?>">
+                        <input class="form-control" id="name" name="lastName" value="<?=$user['lastName']?>">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-4">
                         <label for="name">Phone number</label>
-                        <input class="form-control" id="name" name="name" value="<?=$phoneNum?>">
+                        <input class="form-control" id="name" name="phoneNumber" value="<?=$user['phoneNumber']?>">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-4">
                         <label for="name">Email</label>
-                        <input class="form-control" id="name" name="name" value="<?=$user['email']?>">
+                        <input class="form-control" id="name" name="email" value="<?=$user['email']?>">
                     </div>
                 </div>
 
