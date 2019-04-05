@@ -3,12 +3,24 @@
     
     require_once 'connect.php';
 
-    if(isset($_POST["image"])) {
-        header("Location: myAccount.php");
-        exit;
-    }
+    if(isset($_SESSION["loggedin"])) {
+        $cleanId = filter_var($_SESSION['id'], FILTER_SANITIZE_NUMBER_INT);
+        
+        $query = "SELECT * FROM users WHERE id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $cleanId, PDO::PARAM_INT );
 
-    if(isset($_SESSION["loggedin"]) ) {
+        $statement->execute();
+        $user = $statement->fetch();
+
+        $imageId = $user['id'];
+    }
+    // if(isset($_POST["image"])) {
+    //     header("Location: myAccount.php");
+    //     exit;
+    // }
+
+    if(isset($_SESSION["loggedin"]) && $_SESSION['id']!=2 ) {
         $cleanId = filter_var($_SESSION['id'], FILTER_SANITIZE_NUMBER_INT);
         
         $query = "SELECT * FROM users WHERE id = :id";
@@ -24,8 +36,22 @@
             exit;
         }
 
+    }  
+
+    if(isset($_POST) && file_exists('uploads/'.$_SESSION['id'].'.png') && $_SESSION['id']==2 ) {
+        $cleanId = filter_var($_SESSION['id'], FILTER_SANITIZE_NUMBER_INT);
+        
+        $query = "SELECT * FROM users WHERE id = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $cleanId, PDO::PARAM_INT );
+
+        $statement->execute();
+        $user = $statement->fetch(); 
+
+        $imageId = $user['id'];
     }
 
+    
     if(isset($_SESSION["id"]) && $_SESSION['id']==2 && filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)) {
         $cleanId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -36,6 +62,7 @@
         $statement->execute();
         $user = $statement->fetch(); 
 
+        $imageId = $user['id'];
     }
 
     function setPhoneNumberFormat($number) {
@@ -101,21 +128,28 @@
                                     <p><a href="edit_user.php?id=<?= $user['id']?>" style="width:130px;" class="btn btn-primary btn-sm">Edit profile</a></p>
                                 </div> 
                                 <div class="image-container">
-                                    <?php if(file_exists('uploads/'.$_SESSION['id'].'.png')): ?>
-                                        <img src="uploads/<?=$_SESSION['id']?>.png" alt="profile" style="width:150px; height:150px">
-                                    <?php elseif(file_exists('uploads/'.$_SESSION['id'].'.jpg')): ?>
-                                        <img src="uploads/<?=$_SESSION['id']?>.jpg" alt="profile" style="width:150px; height:150px">
+                                    <?php if(file_exists('uploads/'.$imageId.'.png')): ?>
+                                        <img src="uploads/<?=$imageId?>.png" alt="profile" style="width:150px; height:150px">
+                                    <?php elseif(file_exists('uploads/'.$imageId.'.jpg')): ?>
+                                        <img src="uploads/<?=$imageId?>.jpg" alt="profile" style="width:150px; height:150px">
                                     <?php else: ?>
                                         <img src="http://placehold.it/150x150" id="imgProfile" style="width:150px; height:150px" class="img-thumbnail" />
                                     <?php endif ?>
 
                                     <form method="post" action="uploadImage.php" enctype='multipart/form-data'>                                        
                                         <div class="custom-file col-6">
+                                            <input type="hidden" name="id" value="<?= $user['id'] ?>" />
                                             <input type="file" name="image" id="image" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
                                             <label class="custom-file-label" style="text-align: center !important; font-size:13px;" for="inputGroupFile01">Choose file</label>
                                         </div>
-                                        <input type='submit' class="btn btn-secondary btn-sm" id="btnChangePicture" value="Change">
+                                        <input type='submit' name='submit' class="btn btn-secondary btn-sm" id="btnChangePicture" value="Change">
                                     </form>
+
+                                    <?php if(file_exists('uploads/'.$imageId.'.png')): ?>
+                                    <form method="post" action="deleteImage.php">
+                                        <input type='submit' name='delete' class="btn btn-secondary btn-sm" id="btnChangePicture" value="Delete">
+                                    </form>
+                                    <?php endif ?>
                                 </div>                                                
                             </div>                    
                         </div>
