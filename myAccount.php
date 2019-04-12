@@ -133,7 +133,7 @@
                                     <?php elseif(file_exists('uploads/'.$imageId.'.jpg')): ?>
                                         <img src="uploads/<?=$imageId?>.jpg" alt="profile" style="width:150px; height:150px">
                                     <?php else: ?>
-                                        <img src="http://placehold.it/150x150" id="imgProfile" style="width:150px; height:150px" class="img-thumbnail" />
+                                        <img src="http://placehold.it/150x150" alt="defaultImage" id="imgProfile" style="width:150px; height:150px" class="img-thumbnail" />
                                     <?php endif ?>
 
                                     <form method="post" action="uploadImage.php" enctype='multipart/form-data'>                                        

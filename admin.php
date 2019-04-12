@@ -1,34 +1,3 @@
-<?php
-/*****************************************
- *
- *  Purpose: The php file for the blog home page
- *  Author: Jihyeon Lee
- *  Date Created: March 14, 2019
- *
- *****************************************/
-session_start();
-require_once 'authenticate.php';
-require 'connect.php';
-
-$query = "SELECT * FROM services ORDER BY name ASC";
-$statement = $db->prepare($query); //Returns a PDOStatement object.
-$statement->execute();        // The query is now executed.
-
-$services = $statement->fetchAll();  //fetchAll: get an array of all the rows
-
-$query = "SELECT * FROM users ORDER BY id ASC";
-$statement = $db->prepare($query); //Returns a PDOStatement object.
-$statement->execute();        // The query is now executed.
-
-$users = $statement->fetchAll();  //fetchAll: get an array of all the rows
-
-function setPhoneNumberFormat($number) {
-    $result = substr($number, 0, 3) . '-' .substr($number, 3, 3) . '-' . substr($number, 4, 4);
-    return $result;
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -71,100 +40,12 @@ function setPhoneNumberFormat($number) {
             </ul>
         </nav>
 
-        <div class="col-md-12">
-            <form action="process_post.php" method="post" id="form-list-client">
-                <legend>List of services</legend>
-                <div class="pull-right">
-                    <a class="btn btn-default-btn-xs btn-success" href="create_services.php"><i class="glyphicon glyphicon-plus"></i> Add Service</a>
-                </div>
-                <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <td>Service name</td>
-                            <th>Cost</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <?php if($services != null): ?>
-                    <tbody id="form-list-client-body">
-                    <?php foreach($services as $service): ?>
-                        <tr>
-                            <td><h5><a href="show_service.php?id=<?= $service['id'] ?>"><?= $service['name'] ?></a></h5></td>
-                            <td><h5>$<?= $service['cost'] ?></h5></td>                          
-                            <td>
-                                <a href="show_service.php?id=<?= $service['id'] ?>" title="view this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
-                                <a href="edit_service.php?id=<?= $service['id'] ?>" title="edit this service" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
-                                <a href="process_post.php?id=<?=$service['id']?>" title="delete this service" class="btn btn-default btn-sm " onclick="return confirm('Are you sure you wish to delete this service?')"> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-                    </tbody>
-                </table>
-
-                <?php else: ?>
-                    <p>No services found</p>
-                <?php endif; ?>
-            </form>
+        <div>
+            <ul class="item">
+                <li><a href="manageService.php">Manage Services</a></li>
+                <li><a href="manageUser.php">Manage Users</a></li>
+            </ul>
         </div>
-        <br/>
-        <br/>
-        <div class="col-md-12">
-            <form action="process_post.php" method="post" id="form-list-client">
-                <legend>List of users</legend>
-                <div class="pull-right">
-                    <a class="btn btn-default-btn-xs btn-success" href="signup.php"><i class="glyphicon glyphicon-plus"></i> Add User</a>
-                </div>
-                <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <td>Username</td>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone number</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-
-                    <?php if($users != null): ?>
-                    <tbody id="form-list-client-body">
-                    <?php foreach($users as $user): ?>
-                        <tr>
-                            <td><h5><a href="myAccount.php?id=<?= $user['id'] ?>"><?= $user['username'] ?></a></h5></td>
-                            <td><h5><?= $user['firstName'] ?></h5></td>                    
-                            <td><h5><?= $user['lastName'] ?></h5></td> 
-                            
-                            <?php $phoneNum = setPhoneNumberFormat($user['phoneNumber']); ?>
-                            <td><h5><?= $phoneNum ?></h5></td>                          
-                            <td><h5><?= $user['email'] ?></h5></td>  
-                            <td>
-                                <a href="myAccount.php?id=<?= $user['id'] ?>" title="view this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-eye-open text-primary"></i> </a>
-                                <a href="edit_user.php?id=<?= $user['id'] ?>" title="edit this user" class="btn btn-default btn-sm "> <i class="glyphicon glyphicon-edit text-primary"></i> </a>
-                                <a href="process_user.php?id=<?=$user['id']?>" title="delete this user" class="btn btn-default btn-sm" onclick="return confirm('Are you sure you wish to delete this user?')"> <i class="glyphicon glyphicon-trash text-danger"></i> </a>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-                    </tbody>
-                </table>
-
-                <?php else: ?>
-                    <p>No services found</p>
-                <?php endif; ?>
-            </form>
-        </div>
-
-        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/popper.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/mdb.js"></script>
-        <script type="text/javascript" src="js/addons/datatables.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dtBasicExample').DataTable();
-                $('.dataTables_length').addClass('bs-select');
-            });
-        </script> 
     
     </body>
 </html>
